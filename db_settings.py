@@ -1,6 +1,6 @@
 import os
-
 from importlib import import_module
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 

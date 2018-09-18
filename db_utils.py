@@ -1,9 +1,11 @@
 import logging
+from collections import defaultdict
+
 from sqlalchemy.exc import IntegrityError, DatabaseError, ProgrammingError, OperationalError
+
 from helper import get_unique_id
 from db_settings import session
 from models import Storage
-from collections import defaultdict
 
 
 # for logging
@@ -159,6 +161,11 @@ def get_storage_data(list_skuids):
     '''
         utility method for fulfillment to query storaga table
         and model data to make it usable for fulfillment calculations
+
+        asc is used in query so that the value in the list sorted on quantity
+
+        takes [sku_id1, sku_id2...]
+        returns ({sku_id: [(quantity, storage_id),...]...})
     '''
     storage_records = session.query(Storage).filter(
         Storage.sku_id.in_(list_skuids)).order_by(Storage.stock.asc()).all()

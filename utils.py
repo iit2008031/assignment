@@ -6,6 +6,14 @@ def get_fulfillment_plan_util(lines_data):
         utility function for fulfillment
         takes in lines as a input and returns storage with quantity as an output
 
+        Steps:
+        1) get all sku_ids from payload
+        2) query storage for those skuids
+        3) model data from storaga in ({sku_id: [(quantity, storage_id),()]}) format
+        4) Iterate ove payload and look for sku_id in the model
+        5) update quantity by reducing the amount from storage value and when quantity <= 0
+        6) create result in the format mentioned
+
         Input:
         {
           "lines": [

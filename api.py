@@ -1,6 +1,8 @@
 import json
+
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse
+
 from models import SKU, Order, Storage, OrderLine
 from db_utils import get_details, post_details, put_details, get_all, delete_details
 from utils import get_fulfillment_plan_util
@@ -23,6 +25,26 @@ storage_key_set = set(['sku_id', 'stock'])
 def validate_input(keys, key_set, operation):
     '''
         validates the input and returns True if valid else False
+
+        example:
+            For Storage
+
+            key_set = {sku_id, quantity}
+
+            For (PUT)
+            {data:{sku_id: some_sku_id}}
+            after instersections
+            common = {sku_id}
+            if items in common and keys are same that means all the fields are valid
+
+            For (POST)
+            {data:{sku_id: some_sku_id, quantity: some_integer}}
+            after instersections
+            common = {sku_id, qunatity}
+            all the table columns except will be required hence
+            if items in common and key_set are same that means all the fields are valid
+
+
     '''
     common = keys.intersection(key_set)
     print(common, key_set, keys)
@@ -86,7 +108,7 @@ class SKUAll(Resource):
         res = get_all(SKU)
         if res:
             return res, 200
-        return "Not Found", 404
+        return "No content", 204
 
     def post(self):
         flag, data = prepare_request(sku_key_set, 'post')
