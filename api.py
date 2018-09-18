@@ -21,6 +21,9 @@ storage_key_set = set(['sku_id', 'stock'])
 
 
 def validate_input(keys, key_set, operation):
+    '''
+        validates the input and returns True if valid else False
+    '''
     common = keys.intersection(key_set)
     print(common, key_set, keys)
     if len(common) == len(keys) and operation == 'put':
@@ -31,6 +34,10 @@ def validate_input(keys, key_set, operation):
 
 
 def prepare_request(keys, req_type):
+    '''
+        utility which process the input payload and validate function 
+        returns validation flag and processed data
+    '''
     args = parser.parse_args()
     if not args.get('data'):
         return 'Bad Request! Invalid Input', 400
@@ -42,6 +49,10 @@ def prepare_request(keys, req_type):
 
 
 class SKUAPI(Resource):
+
+    '''
+        RUD API for SKU
+    '''
 
     def get(self, sku_id):
         res = get_details(SKU, sku_id)
@@ -67,6 +78,10 @@ class SKUAPI(Resource):
 
 class SKUAll(Resource):
 
+    '''
+        Create and get all API for SKU
+    '''
+
     def get(self):
         res = get_all(SKU)
         if res:
@@ -84,6 +99,10 @@ class SKUAll(Resource):
 
 
 class OrderApi(Resource):
+
+    '''
+        RUD API for Order
+    '''
 
     def get(self, order_id):
         res = get_details(Order, order_id)
@@ -109,6 +128,10 @@ class OrderApi(Resource):
 
 class OrderAll(Resource):
 
+    '''
+        Create and get all API for Order
+    '''
+
     def get(self):
         res = get_all(Order)
         if res:
@@ -125,6 +148,10 @@ class OrderAll(Resource):
 
 
 class StorageApi(Resource):
+
+    '''
+        RUD API for Storage
+    '''
 
     def get(self, storage_id):
         res = get_details(Storage, storage_id)
@@ -150,6 +177,10 @@ class StorageApi(Resource):
 
 class StorageAll(Resource):
 
+    '''
+        Create and get all API for Storage
+    '''
+
     def get(self):
         res = get_all(Storage)
         if res:
@@ -166,6 +197,10 @@ class StorageAll(Resource):
 
 
 class OrderLineApi(Resource):
+
+    '''
+        RUD API for Order Line
+    '''
 
     def get(self, order_id):
         res = get_details(Order, order_id)
@@ -191,6 +226,10 @@ class OrderLineApi(Resource):
 
 class OrderLineAll(Resource):
 
+    '''
+        Create and get all API for Order Line
+    '''
+
     def get(self):
         res = get_all(OrderLine)
         if res:
@@ -208,6 +247,9 @@ class OrderLineAll(Resource):
 
 @app.route('/fulfillment', methods=['POST'])
 def get_fulfillment_plan():
+    '''
+        handler for fulfillment endpoint
+    '''
     try:
         payload = request.get_json()
         data = payload.get('lines')

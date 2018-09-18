@@ -2,6 +2,40 @@ from db_utils import get_storage_data
 
 
 def get_fulfillment_plan_util(lines_data):
+    '''
+        utility function for fulfillment
+        takes in lines as a input and returns storage with quantity as an output
+
+        Input:
+        {
+          "lines": [
+            {
+              "sku": "f9ec224d-d374-4368-bcc2-f165d017083b",
+              "quantity": 12
+            },
+            {
+              "sku": "ea215953-f842-4b6d-a128-d1b67e6dbb47",
+              "quantity": 2
+            }
+          ]
+        }
+
+        Output:
+        [
+            {
+                "id": "a0dfc5fc-3fac-49d0-ad82-e98b2d273c50",
+                "quantity": 5
+            },
+            {
+                "id": "a1c9e240-451f-4dbe-9ea8-e42202d77a3b",
+                "quantity": 7
+            },
+            {
+                "id": "a2444030-f96b-4585-9bc5-444214a921ca",
+                "quantity": 2
+            }
+        ]
+    '''
     res = []
     sku_ids = [line.get('sku') for line in lines_data]
     storage_data = get_storage_data(sku_ids)

@@ -5,11 +5,19 @@ from db_settings import session
 from models import Storage
 from collections import defaultdict
 
+
+# for logging
 logging.basicConfig(filename='error.log', level=logging.ERROR,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
 def get_details(model, id):
+    '''
+        Generic get method for all the models
+        takes model and id as an input
+        returns the data of the resource pointed by that id
+        from the database
+    '''
     try:
         data = session.query(model).filter(model.id == id).all()
     except ProgrammingError as e:
@@ -36,6 +44,11 @@ def get_details(model, id):
 
 
 def post_details(model, data):
+    '''
+        Generic post method for all the models
+        takes model and data as an input
+        creates a new resource and pushed data into the databas
+    '''
     data['id'] = get_unique_id()
     try:
         session.add(model(**data))
@@ -65,6 +78,12 @@ def post_details(model, data):
 
 
 def put_details(model, id, data):
+    '''
+        Generic put method for all the models
+        takes model, id, data as an input
+        updates the resource with the data supplied
+        pushed to the database
+    '''
     try:
         session.query(model).filter(model.id == id).update(
             data, synchronize_session=False)
@@ -89,6 +108,12 @@ def put_details(model, id, data):
 
 
 def delete_details(model, id):
+    '''
+        Generic delete method for all the models
+        takes model, id as an input
+        deleted the resource with that id
+        and commits to the database
+    '''
     to_be_deleted = session.query(model).get(id)
     if to_be_deleted:
         try:
@@ -118,6 +143,9 @@ def delete_details(model, id):
 
 
 def get_all(model):
+    '''
+        get all the resource for a model
+    '''
     res = []
     for u in session.query(model).all():
         d = u.__dict__
@@ -128,7 +156,10 @@ def get_all(model):
 
 
 def get_storage_data(list_skuids):
-    print(list_skuids)
+    '''
+        utility method for fulfillment to query storaga table
+        and model data to make it usable for fulfillment calculations
+    '''
     storage_records = session.query(Storage).filter(
         Storage.sku_id.in_(list_skuids)).order_by(Storage.stock.asc()).all()
     res = defaultdict(list)
