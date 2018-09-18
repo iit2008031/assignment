@@ -8,12 +8,12 @@ GRANT ALL PRIVILEGES ON DATABASE "warehouse" to warehouse;
 
 # Step - 2 
 ## create needed tables and indexes
-### go to root folder of a project and run
+go to root folder of a project and run
 python models.py
 
 # Step -3 
 ## Host the Service
-### go to root folder of a project and run
+go to root folder of a project and run
 python api.py
 
 Use postman for verifying endpoints
